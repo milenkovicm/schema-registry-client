@@ -11,7 +11,7 @@ It comes in two flavors: synchronous and asynchronous
  
 ```java
 // lookup schema by subject
-AsyncSchemaRegistry registry = new DefaultAsyncSchemaRegistry("http://localhost:" + server.getPort());
+AsyncSchemaRegistry registry = new DefaultAsyncSchemaRegistry("http://localhost:8090");
 final Observable<RegistryItem> registryItem = registry.lookup("test-schema");
 ```
 
