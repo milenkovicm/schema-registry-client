@@ -1,4 +1,4 @@
-# Schema registry client
+# Schema registry client [![Build Status](https://travis-ci.org/milenkovicm/schema-registry-client.svg)](https://travis-ci.org/milenkovicm/schema-registry-client)
 Schema registry ( https://github.com/confluentinc/schema-registry ) is a handy tool to share Apache Avro ( https://avro.apache.org/ ) schemas across multiple applications. 
 This library is a tool to query the registry for registered schemas. 
 It queries remote schema registry for schemas and keeps it in a local cache.
