@@ -11,26 +11,38 @@ It comes in two flavors: synchronous and asynchronous
  
 ```java
 // lookup schema by subject
-AsyncSchemaRegistry registry = new DefaultAsyncSchemaRegistry("http://localhost:8090");
+final AsyncSchemaRegistry registry = new DefaultAsyncSchemaRegistry("http://localhost:8090");
 final Observable<RegistryItem> registryItem = registry.lookup("test-schema");
 ```
 
 ```java
 // lookup schema by id
-AsyncSchemaRegistry registry = new DefaultAsyncSchemaRegistry("http://localhost:8090");
+final AsyncSchemaRegistry registry = new DefaultAsyncSchemaRegistry("http://localhost:8090");
 final Observable<RegistryItem> registryItem = registry.lookup(81);
 ```
 
 ```java
 // lookup schema by subject but block 
-SyncSchemaRegistry registry = new DefaultSyncSchemaRegistry("http://localhost:8090");
+final SyncSchemaRegistry registry = new DefaultSyncSchemaRegistry("http://localhost:8090");
 final RegistryItem registryItem = registry.lookup("test-schema");
 ```
 
 ```java
 // lookup schema by id but block
-SyncSchemaRegistry registry = new DefaultSyncSchemaRegistry("http://localhost:8090");
+final SyncSchemaRegistry registry = new DefaultSyncSchemaRegistry("http://localhost:8090");
 final RegistryItem registryItem = registry.lookup(81);
+```
+
+```java
+final DefaultAsyncSchemaRegistry registry = new DefaultAsyncSchemaRegistry("http://localhost:8090");
+final RegistryItem registryItem = new RegistryItem("test-subject",null, null, Default.DEFAULT_SCHEMA );
+final Observable<RegistryItem> schemaItem = registry.put(registryItem);
+```
+
+```java
+final DefaultSyncSchemaRegistry registry = new DefaultSyncSchemaRegistry("http://localhost:8090");
+final RegistryItem registryItem = new RegistryItem("test-subject",null, null, Default.DEFAULT_SCHEMA );
+final RegistryItem schemaItem = registry.put(registryItem);
 ```
 
 Once the `RegistryItem` is available getting avro schema from it is as simple as `registryItem.getSchema()`

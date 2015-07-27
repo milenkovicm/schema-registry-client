@@ -37,6 +37,6 @@ public class DefaultAsyncSchemaRegistry implements AsyncSchemaRegistry {
 
     @Override
     public Observable<RegistryItem> put(RegistryItem registryItem) {
-        throw new UnsupportedOperationException("put not implemented");
+        return remoteAsyncSchemaRegistry.put(registryItem).subscribeOn(Schedulers.io());
     }
 }

@@ -18,7 +18,7 @@ public class RemoteSchemaRegistryTest extends AbstractWebTest {
         server.enqueue(new MockResponse().setBody(Default.DEFAULT_NAME_RESPONSE));
 
         final SchemaRegistryClient registry = RestAsyncSchemaRegistry.getInstance("http://localhost:" + server.getPort());
-        final SchemaRegistryResponse response = registry.lookup("test-schema");
+        final SchemaRegistryItem response = registry.lookup("test-schema");
 
         final RecordedRequest recordedRequest = server.takeRequest();
         assertThat(recordedRequest.getPath(), is("/subjects/test-schema/versions/latest"));
@@ -34,13 +34,29 @@ public class RemoteSchemaRegistryTest extends AbstractWebTest {
         server.enqueue(new MockResponse().setBody(Default.DEFAULT_ID_RESPONSE));
 
         final SchemaRegistryClient registry = RestAsyncSchemaRegistry.getInstance("http://localhost:" + server.getPort());
-        final SchemaRegistryResponse response = registry.lookup(81);
+        final SchemaRegistryItem response = registry.lookup(81);
 
         final RecordedRequest recordedRequest = server.takeRequest();
         assertThat(recordedRequest.getPath(), is("/schemas/ids/81"));
         assertThat(recordedRequest.getMethod(), is("GET"));
         assertThat(response.getSchema(), is(Default.DEFAULT_ID_SCHEMA));
+    }
 
+    @Test
+    public void putSchema_forName_success() throws InterruptedException {
+        server.enqueue(new MockResponse().setBody(Default.DEFAULT_ID_POST_REPONSE));
+
+        final SchemaRegistryClient registry = RestAsyncSchemaRegistry.getInstance("http://localhost:" + server.getPort());
+        final SchemaRegistryItem schemaRegistryItem = new SchemaRegistryItem();
+
+        schemaRegistryItem.setSchema(Default.DEFAULT_SCHEMA.toString());
+
+        final SchemaRegistryId put = registry.put("test-sbject", schemaRegistryItem);
+
+        final RecordedRequest recordedRequest = server.takeRequest();
+        assertThat(recordedRequest.getPath(), is("/subjects/test-sbject/versions"));
+        assertThat(recordedRequest.getMethod(), is("POST"));
+        assertThat(put.getId(), is(102L));
     }
 
     @Test
@@ -72,6 +88,21 @@ public class RemoteSchemaRegistryTest extends AbstractWebTest {
         assertThat(schemaItem.getId(), is(81L));
         assertThat(schemaItem.getSchema(), notNullValue());
 
+    }
+
+    @Test
+    public void putSchemaAsync_forName_success() throws InterruptedException {
+        server.enqueue(new MockResponse().setBody(Default.DEFAULT_ID_POST_REPONSE));
+
+        final RestAsyncSchemaRegistry registry = new RestAsyncSchemaRegistry("http://localhost:" + server.getPort());
+
+        final RegistryItem registryItem = new RegistryItem("test-sbject",null, null, Default.DEFAULT_SCHEMA );
+        final RegistryItem schemaItem = registry.put(registryItem).toBlocking().single();
+
+        final RecordedRequest recordedRequest = server.takeRequest();
+        assertThat(recordedRequest.getPath(), is("/subjects/test-sbject/versions"));
+        assertThat(recordedRequest.getMethod(), is("POST"));
+        assertThat(schemaItem.getId(), is(102L));
     }
 
 }

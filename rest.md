@@ -38,6 +38,11 @@ GET http://localhost:8090/schemas/ids/41
 ```json
 {"schema":"{   \"type\": \"record\",   \"subject\": \"E_2\",   \"namespace\": \"com.github.milenkovicm.avro\",   \"fields\": [     {       \"subject\": \"P1\",       \"type\": \"string\"     },     {       \"subject\": \"P2\",       \"type\": \"string\"     },     {       \"subject\": \"P3\",       \"type\": \"string\"     }   ] }"}
 ```
+http://localhost:8090/subjects/test-sbjct2/versions
 
-POST http://localhost:8090/subjects/test-schema/versions
+```json
+{
+    id: 101
+}
+```
 

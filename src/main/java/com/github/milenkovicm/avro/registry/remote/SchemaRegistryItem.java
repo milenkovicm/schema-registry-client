@@ -2,7 +2,7 @@ package com.github.milenkovicm.avro.registry.remote;
 
 import com.github.milenkovicm.avro.registry.SchemaUtil;
 
-class SchemaRegistryResponse {
+class SchemaRegistryItem {
 
     private String subject;
     private Integer version;

@@ -65,4 +65,18 @@ public class DefaultAsyncSchemaRegistryTest extends AbstractWebTest {
 
         assertThat(server.getRequestCount(), is(1));
     }
+
+    @Test
+    public void putSchemaAsync_forName_success() throws InterruptedException {
+        server.enqueue(new MockResponse().setBody(Default.DEFAULT_ID_POST_REPONSE));
+
+        final DefaultAsyncSchemaRegistry registry = new DefaultAsyncSchemaRegistry("http://localhost:" + server.getPort());
+        final RegistryItem registryItem = new RegistryItem("test-sbject",null, null, Default.DEFAULT_SCHEMA );
+        final RegistryItem schemaItem = registry.put(registryItem).toBlocking().single();
+
+        final RecordedRequest recordedRequest = server.takeRequest();
+        assertThat(recordedRequest.getPath(), is("/subjects/test-sbject/versions"));
+        assertThat(recordedRequest.getMethod(), is("POST"));
+        assertThat(schemaItem.getId(), is(102L));
+    }
 }
