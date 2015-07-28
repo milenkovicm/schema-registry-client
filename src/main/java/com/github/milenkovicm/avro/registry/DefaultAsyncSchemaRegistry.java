@@ -3,6 +3,7 @@ package com.github.milenkovicm.avro.registry;
 import com.github.milenkovicm.avro.registry.local.CachedSchemaRegistry;
 import com.github.milenkovicm.avro.registry.remote.RestAsyncSchemaRegistry;
 import rx.Observable;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 public class DefaultAsyncSchemaRegistry implements AsyncSchemaRegistry {
@@ -21,7 +22,12 @@ public class DefaultAsyncSchemaRegistry implements AsyncSchemaRegistry {
                 .switchIfEmpty(
                         remoteAsyncSchemaRegistry
                                 .lookup(name).subscribeOn(Schedulers.io())
-                                .flatMap(s -> localAsyncSchemaRegistry.put(s))
+                                .flatMap(new Func1<RegistryItem, Observable<? extends RegistryItem>>() {
+                                    @Override
+                                    public Observable<? extends RegistryItem> call(RegistryItem registryItem) {
+                                        return localAsyncSchemaRegistry.put(registryItem);
+                                    }
+                                })
                 );
     }
 
@@ -31,7 +37,12 @@ public class DefaultAsyncSchemaRegistry implements AsyncSchemaRegistry {
                 .switchIfEmpty(
                         remoteAsyncSchemaRegistry
                                 .lookup(id).subscribeOn(Schedulers.io())
-                                .flatMap(s -> localAsyncSchemaRegistry.put(s))
+                                .flatMap(new Func1<RegistryItem, Observable<? extends RegistryItem>>() {
+                                    @Override
+                                    public Observable<? extends RegistryItem> call(RegistryItem registryItem) {
+                                        return localAsyncSchemaRegistry.put(registryItem);
+                                    }
+                                })
                 );
     }
 

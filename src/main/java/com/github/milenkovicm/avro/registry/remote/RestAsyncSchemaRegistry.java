@@ -31,7 +31,7 @@ public class RestAsyncSchemaRegistry implements AsyncSchemaRegistry {
     }
 
     @Override
-    public Observable<RegistryItem> lookup(String name) {
+    public Observable<RegistryItem> lookup(final String name) {
         return Observable.defer(new Func0<Observable<RegistryItem>>() {
             @Override
             public Observable<RegistryItem> call() {
@@ -44,7 +44,7 @@ public class RestAsyncSchemaRegistry implements AsyncSchemaRegistry {
     }
 
     @Override
-    public Observable<RegistryItem> lookup(long id) {
+    public Observable<RegistryItem> lookup(final long id) {
 
         return Observable.defer(new Func0<Observable<RegistryItem>>() {
             @Override
@@ -58,7 +58,7 @@ public class RestAsyncSchemaRegistry implements AsyncSchemaRegistry {
     }
 
     @Override
-    public Observable<RegistryItem> put(RegistryItem registryItem) {
+    public Observable<RegistryItem> put(final RegistryItem registryItem) {
         return Observable.defer(new Func0<Observable<RegistryItem>>() {
             @Override
             public Observable<RegistryItem> call() {
